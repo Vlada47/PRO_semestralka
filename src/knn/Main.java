@@ -17,10 +17,12 @@ public class Main {
 	private static File trainingSetFile;
 	private static File testingSetFile;
 	private static int kNumber;
+	private static int distanceType;
+	private static int useAdaptiveDistanceMeasure;
 	private static Classification knnClassification;
 
 	public static void main(String[] args) {
-		if(args.length != 3) {
+		if(args.length != 5) {
 			System.err.println("You have to pass two argumets: path to the file with training dataset"
 					+ ", path to the file with testing dataset"
 					+ " and number of nearest neighbors used for classification"
@@ -31,7 +33,9 @@ public class Main {
 				trainingSetFile = new File(args[0]);
 				testingSetFile = new File(args[1]);
 				kNumber = Integer.parseInt(args[2]);
-				knnClassification = new Classification(getTrainingSet(trainingSetFile), getTestingSet(testingSetFile), kNumber);
+				distanceType = Integer.parseInt(args[3]);
+				useAdaptiveDistanceMeasure = Integer.parseInt(args[4]);
+				knnClassification = new Classification(getSetFromFile(trainingSetFile, true), getSetFromFile(testingSetFile, false), kNumber, distanceType, useAdaptiveDistanceMeasure);
 			}
 			catch(NullPointerException e1) {
 				System.err.println("No path to the file: \n" + e1.getMessage());
@@ -43,7 +47,7 @@ public class Main {
 				System.err.println("File not found: \n" + e3.getMessage());
 			}
 			catch(IOException e4) {
-				System.err.println("Parsing the file failed: \n" + e4.getMessage());
+				System.err.println("Parsing of the file failed: \n" + e4.getMessage());
 			}
 			finally {
 				System.out.println("Program exiting.");
@@ -52,8 +56,8 @@ public class Main {
 		}	
 	}
 	
-	private static List<Pattern> getTrainingSet(File trainingSetFile) throws FileNotFoundException, IOException, NumberFormatException {
-		ArrayList<Pattern> trainingSet = new ArrayList<Pattern>();
+	private static List<Pattern> getSetFromFile(File testingSetFile, boolean trainingSet) throws FileNotFoundException, IOException, NumberFormatException {
+		ArrayList<Pattern> setFromFile = new ArrayList<Pattern>();
 		
 		BufferedReader br = new BufferedReader(new FileReader(trainingSetFile));
 		
@@ -71,37 +75,16 @@ public class Main {
 				parsedVector[j] = Double.parseDouble(myVectorSplit[j]);
 			}
 			
-			Pattern newPattern = new Pattern(parsedVector, myLineSplit[1]);
-			trainingSet.add(newPattern);
+			Pattern newPattern = null;
+			
+			if(trainingSet) newPattern = new Pattern(parsedVector, myLineSplit[1], myLineSplit[1]);
+			else newPattern = new Pattern(parsedVector, myLineSplit[1]);
+			
+			setFromFile.add(newPattern);
 		}
 		
 		br.close();
-		return trainingSet;
-	}
-	
-	private static List<Pattern> getTestingSet(File testingSetFile) throws FileNotFoundException, IOException, NumberFormatException {
-		ArrayList<Pattern> testingSet = new ArrayList<Pattern>();
-		
-		BufferedReader br = new BufferedReader(new FileReader(trainingSetFile));
-		
-		int patternCnt = Integer.parseInt(br.readLine());
-		String[] myVectorSplit = null;
-		double[] parsedVector = null;
-		
-		for(int i = 0; i < patternCnt; i++) {
-			myVectorSplit = br.readLine().split(VECTOR_PARSING_REGEX);
-			parsedVector = new double[myVectorSplit.length];
-			
-			for(int j = 0; j < myVectorSplit.length; j++) {
-				parsedVector[j] = Double.parseDouble(myVectorSplit[j]);
-			}
-			
-			Pattern newPattern = new Pattern(parsedVector);
-			testingSet.add(newPattern);
-		}
-		
-		br.close();
-		return testingSet;
+		return setFromFile;
 	}
 	
 	
