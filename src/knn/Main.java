@@ -11,19 +11,64 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Main class of the program.
+ * @author Vladimír Láznièka
+ *
+ */
 public class Main {
 	
+	/**
+	 * Regular expression used in files to split informations (like the vector from the class).
+	 */
 	private static final String INFO_PARSING_REGEX = ";";
+	
+	/**
+	 * Regular expression used in files to split individual dimensions.
+	 */
 	private static final String VECTOR_PARSING_REGEX = ",";
 	
+	/**
+	 * File with the training patterns.
+	 */
 	private static File trainingSetFile;
+	
+	/**
+	 * File with the testing patterns.
+	 */
 	private static File testingSetFile;
+	
+	/**
+	 * Number of nearest neighbors used for classification.
+	 */
 	private static int kNumber;
+	
+	/**
+	 * Indicator for the type of distance function used.
+	 */
 	private static int distanceType;
+	
+	/**
+	 * Indicator whether the adaptive distance measure will be used.
+	 */
 	private static int useAdaptiveDistanceMeasure;
+	
+	/**
+	 * Instance of the KNN classifier.
+	 */
 	private static Classification knnClassification;
+	
+	/**
+	 * List with classified testing pattern. 
+	 */
 	private static List<Pattern> resultSet;
-
+	
+	/**
+	 * Main method of the program. It takes arguments from the command line, stores them in variables and passes them
+	 * to {@code Classification} instance. It then invokes {@code classify} method to classify testing patterns and writes
+	 * them to the file via {@code writeResultSet} method.
+	 * @param args	arguments from the command line (there have to exactly 5 of them)
+	 */
 	public static void main(String[] args) {
 		if(args.length != 5) {
 			System.err.println("You have to pass two argumets: path to the file with training dataset"
@@ -66,10 +111,20 @@ public class Main {
 		}	
 	}
 	
-	private static List<Pattern> getSetFromFile(File testingSetFile, boolean isTrainingSet) throws FileNotFoundException, IOException, NumberFormatException {
+	/**
+	 * Method reading patterns from given file and storing them to the list.
+	 * Based on the {@code isTrainingSet} parameter it determines whether to create training or testing patterns.
+	 * @param file			the file with patterns in specific format
+	 * @param isTrainingSet	indicator, whether file contains training or testing patterns
+	 * @return	list with patterns from the file
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	private static List<Pattern> getSetFromFile(File file, boolean isTrainingSet) throws FileNotFoundException, IOException, NumberFormatException {
 		ArrayList<Pattern> setFromFile = new ArrayList<Pattern>();
 		
-		BufferedReader br = new BufferedReader(new FileReader(trainingSetFile));
+		BufferedReader br = new BufferedReader(new FileReader(file));
 		
 		int patternCnt = Integer.parseInt(br.readLine());
 		String[] myLineSplit = null;
@@ -97,6 +152,11 @@ public class Main {
 		return setFromFile;
 	}
 	
+	/**
+	 * Method calculating accuracy of the classification based on the success ratio of correctly determined class.
+	 * @param resultSet	list with classified testing patterns
+	 * @return	accuracy of the classification (a number between 0 and 1)
+	 */
 	private static double getAccuracy(List<Pattern> resultSet) {
 		double accuracy = 0.0;
 		int correctCnt = 0;
@@ -111,6 +171,14 @@ public class Main {
 		return accuracy;
 	}
 	
+	/**
+	 * Method for writing classified testing patterns to the file is specific format.
+	 * It writes the lines in this order: {@code vector;classified class;correct class}.
+	 * It also appends the accuracy of the classification as % to the end of the file.
+	 * @param resultSet	list with classified testing patterns
+	 * @param accuracy	accuracy of the classification
+	 * @throws IOException
+	 */
 	private static void writeResultSet(List<Pattern> resultSet, double accuracy) throws IOException  {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(testingSetFile.getPath()+".result")));
 		
