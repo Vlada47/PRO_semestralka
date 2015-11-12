@@ -26,7 +26,7 @@ public class Classification {
 		this.useAdaptiveDistanceMeasure = useAdaptiveDistanceMeasure;
 	}
 	
-	public List<Pattern> classify() {
+	public List<Pattern> classify() throws IndexOutOfBoundsException {
 		if(useAdaptiveDistanceMeasure == USE_ADM) createAdaptiveDistanceMeasures();
 		
 		for(Pattern testedPattern : testingSet) {
@@ -39,7 +39,7 @@ public class Classification {
 		return classifiedSet;
 	}
 	
-	private void createAdaptiveDistanceMeasures() {
+	private void createAdaptiveDistanceMeasures() throws IndexOutOfBoundsException {
 		for(int i = 0; i < trainingSet.size(); i++) {
 			
 			double distanceMeasure = Double.MAX_VALUE;
@@ -65,7 +65,7 @@ public class Classification {
 		}
 	}
 	
-	private void setDistances(Pattern testedPattern) {
+	private void setDistances(Pattern testedPattern) throws IndexOutOfBoundsException {
 		for(Pattern trainingPattern : trainingSet) {
 			
 			double distance = 0.0;
