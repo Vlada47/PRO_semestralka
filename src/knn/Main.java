@@ -161,9 +161,8 @@ public class Main {
 		double accuracy = 0.0;
 		int correctCnt = 0;
 		
-		
 		for(Pattern p : resultSet) {
-			if(p.getClass().equals(p.getCorrectClass())) correctCnt++;
+			if(p.getPatternClass().equals(p.getCorrectClass())) correctCnt++;
 		}
 		
 		accuracy = ((double)correctCnt) / resultSet.size();

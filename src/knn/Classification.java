@@ -80,7 +80,7 @@ public class Classification {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public List<Pattern> classify() throws IndexOutOfBoundsException {
-		if(useAdaptiveDistanceMeasure == USE_ADM) createAdaptiveDistanceMeasures();
+		if(useAdaptiveDistanceMeasure == USE_ADM) { createAdaptiveDistanceMeasures(); System.out.println("Using ADM"); }
 		
 		for(Pattern testedPattern : testingSet) {
 			setDistances(testedPattern);
@@ -111,11 +111,11 @@ public class Classification {
 					
 					switch(distanceType) {
 					case DISTANCE_EUCLIDEAN:
-						currDistance = calculateDistanceEuclidean(trainingSet.get(i).getVector(), trainingSet.get(j).getVector());
+						currDistance = calculateDistanceEuclidean(trainingSet.get(i).getVector(), trainingSet.get(j).getVector()); break;
 					case DISTANCE_MANHATTAN:
-						currDistance = calculateDistanceManhattan(trainingSet.get(i).getVector(), trainingSet.get(j).getVector());
+						currDistance = calculateDistanceManhattan(trainingSet.get(i).getVector(), trainingSet.get(j).getVector()); break;
 					default:
-						currDistance = 1.0;
+						currDistance = calculateDistanceEuclidean(trainingSet.get(i).getVector(), trainingSet.get(j).getVector()); break;
 					}
 					
 					if(currDistance < distanceMeasure) distanceMeasure = currDistance;
@@ -140,11 +140,11 @@ public class Classification {
 			
 			switch(distanceType) {
 			case DISTANCE_EUCLIDEAN:
-				distance = calculateDistanceEuclidean(testedPattern.getVector(), trainingPattern.getVector());
+				distance = calculateDistanceEuclidean(testedPattern.getVector(), trainingPattern.getVector()); break;
 			case DISTANCE_MANHATTAN:
-				distance = calculateDistanceManhattan(testedPattern.getVector(), trainingPattern.getVector());
+				distance = calculateDistanceManhattan(testedPattern.getVector(), trainingPattern.getVector()); break;
 			default:
-				distance = 0.0;
+				distance = calculateDistanceEuclidean(testedPattern.getVector(), trainingPattern.getVector()); break;
 			}
 			
 			trainingPattern.setDistance(distance / trainingPattern.getAdaptiveDistanceMeasure());
