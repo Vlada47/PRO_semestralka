@@ -1,0 +1,64 @@
+Iris:
+-----
+
+150 instances, 3 classes
+
+Attributes:
+
+	1. sepal length in cm 
+	2. sepal width in cm 
+	3. petal length in cm 
+	4. petal width in cm 
+	5. class: 
+	-- Iris Setosa 
+	-- Iris Versicolour 
+	-- Iris Virginica
+
+Custom modification to original dataset:		120 instances (40 of each class) used as training patterns
+												30 instances (10 of each class) used as testing patterns
+
+
+
+Ionosphere:
+-----------
+
+351 instances, 2 classes
+
+Attributes:
+
+	-- All 34 are continuous 
+	-- The 35th attribute is either "good" or "bad" according to the definition summarized above. This is a binary classification task.
+
+Custom modification to original dataset:		281 instances used as training patterns
+												70 instances used as testing patterns
+
+
+
+
+Breast Cancer Wisconsin (Diagnostic):
+-------------------------------------
+
+569 instances, 2 classes
+
+Attributes:
+
+	1) ID number 
+	2) Diagnosis (M = malignant, B = benign) 
+	3-32) 
+
+	Ten real-valued features are computed for each cell nucleus: 
+
+	a) radius (mean of distances from center to points on the perimeter) 
+	b) texture (standard deviation of gray-scale values) 
+	c) perimeter 
+	d) area 
+	e) smoothness (local variation in radius lengths) 
+	f) compactness (perimeter^2 / area - 1.0) 
+	g) concavity (severity of concave portions of the contour) 
+	h) concave points (number of concave portions of the contour) 
+	i) symmetry 
+	j) fractal dimension ("coastline approximation" - 1)
+
+Custom modification to original dataset:		457 instances used as training patterns
+												112 instances (X of each class) used as testing patterns
+												Removed IDs

@@ -69,7 +69,8 @@ public class Main {
 	 * them to the file via {@code writeResultSet} method.
 	 * @param args	arguments from the command line (there have to exactly 5 of them)
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) {	
+		
 		if(args.length != 5) {
 			System.err.println("You have to pass two argumets: path to the file with training dataset"
 					+ ", path to the file with testing dataset,"
@@ -108,7 +109,7 @@ public class Main {
 				System.out.println("Program exiting.");
 				System.exit(0);
 			}
-		}	
+		}
 	}
 	
 	/**
@@ -189,4 +190,28 @@ public class Main {
 		bw.write("Accuracy result: "+accuracy*100+"%");
 		bw.close();
 	}
+	
+	/*private static void transferData(File input, File output) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(input));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+		
+		String myLine = "";
+		
+		while((myLine = br.readLine()) != null) {
+			String[] data = myLine.split(",");
+			String outputLine = "";
+			String patternClass = data[1];
+			
+			for(int i = 2; i < data.length-1; i++) {
+				outputLine += data[i]+","; 
+			}
+			outputLine += data[data.length-1] + ";";
+			outputLine += patternClass + "\n";
+			
+			bw.write(outputLine);
+		}
+		
+		br.close();
+		bw.close();
+	}*/
 }
